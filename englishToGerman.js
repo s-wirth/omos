@@ -40,16 +40,15 @@
 
   function cLo() {
     elements.forEach((el) => {
-      if (el.children.length === 0 && el.textContent) {
-        oldWords = el.textContent.trim().split(/[^a-z]/gi);
-        oldWords.forEach((word) => {
-          el.textContent = el.textContent.replace(word, word.toUpperCase());
-        });
-        console.log("el.textContent.trim()", el.textContent.trim());
-        console.log(
-          "el.textContent.trim()",
-          el.textContent.trim().split(/[^a-z]/gi)
-        );
+      if (el.textContent && el.children.length > 0) {
+        childTextNodes = [];
+        el.childNodes.forEach((child, index) => {
+          if (child.nodeType === Node.TEXT_NODE) {
+            console.log('child', child)
+            childTextNodes.push({ child, index });
+          }
+        })
+        // console.log('childTextNodes', childTextNodes)
       }
     });
   }
