@@ -1,18 +1,32 @@
 (function translateAndLocalize() {
-  const engGerDict = {
+  const engGerWordsDict = {
     ACTIVE: "aktiv",
     PAUSED: "pausiert",
+    SKIPPED: "übersprungen",
     NEXT: "nächste",
+    SELECTED: "ausgewählte",
+    FOR: "für",
+    STARTED: "angefangen",
+    ON: "am",
+    UNTIL: "bis",
+    NEW: "neues",
+    // nouns
     DELIVERY: "Lieferung",
     SUBSCRIPTION: "Abbo",
     SUBSCRIPTIONS: "Abbos",
-    SELECTED: "ausgewählte",
     FLAVOR: "Sorte",
     FLAVORS: "Sorten",
     WEEK: "Woche",
     WEEKS: "Wochen",
-    FOR: "für",
+    MONDAY: "Montag",
+    TUESDAY: "Dienstag",
+    WEDNESDAY: "Mittwoch",
+    THURSDAY: "Donnerstag",
+    FRIDAY: "Freitag",
+    SATURDAY: "Samstag",
+    SUNDAY: "Sonntag",
   };
+
   function replaceTranslations() {
     const elements = document.querySelectorAll("body, body *");
     elements.forEach((el) => {
@@ -24,11 +38,11 @@
             newText = child.textContent;
             oldWords = childText.trim().split(/[^a-z]/gi);
             oldWords.forEach((word) => {
-              if (engGerDict[word.toUpperCase()]) {
+              if (engGerWordsDict[word.toUpperCase()]) {
                 repWord = /[A-Z]/.test(word[0])
-                  ? engGerDict[word.toUpperCase()].charAt(0).toUpperCase() +
-                    engGerDict[word.toUpperCase()].slice(1)
-                  : engGerDict[word.toUpperCase()];
+                  ? engGerWordsDict[word.toUpperCase()].charAt(0).toUpperCase() +
+                    engGerWordsDict[word.toUpperCase()].slice(1)
+                  : engGerWordsDict[word.toUpperCase()];
                 newText = newText.replace(word, repWord);
               }
             });
@@ -43,14 +57,41 @@
       }
     });
   }
+  function localizeEnglishDates() {
+    const elements = document.querySelectorAll('body, body *');
+    const regex = /\b([A-Za-z]{3}) (\d{1,2}), (\d{4})\b/g;
+
+    const months = {
+      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+      Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+    };
+
+    elements.forEach(el => {
+      if (el.children.length === 0 && regex.test(el.textContent)) {
+        el.textContent = el.textContent.replace(regex, (match, mon, day, year) => {
+          const date = new Date(year, months[mon], day);
+          if (!isNaN(date)) {
+            return new Intl.DateTimeFormat('de-DE', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            }).format(date);
+          }
+          return match;
+        });
+      }
+    });
+  }
+
   replaceTranslations();
+  localizeEnglishDates();
 })();
 
 /* Function to test individual bits of code */
 
 (function testStuff() {
   const elements = document.querySelectorAll("body, body *");
-  const engGerDict = {
+  const engGerWordsDict = {
     ACTIVE: "aktiv",
     PAUSED: "pausiert",
     NEXT: "nächste",
