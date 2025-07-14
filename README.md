@@ -27,3 +27,9 @@ Copy and paste the entire body of englishToGerman.js into the console of the tes
 2. searches for text matching regex
 3. creates new date object with German formatting
 4. replaces the old date with the new date
+
+## Used Tools
+
+1. Visual Studio Code
+2. Windsurf AI Plugin for VS Code
+3. GitHub
